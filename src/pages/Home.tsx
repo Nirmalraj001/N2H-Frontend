@@ -40,8 +40,9 @@ export const Home = () => {
   const { data: categories = [], isLoading: categoriesLoading } = useCategories();
   const { data: allProducts = [], isLoading: productsLoading } = useProducts({ });
 
-  const featuredProducts = allProducts?.items?.slice(0, 8);
-  const bestSellingProducts = allProducts?.items?.filter(p => p.rating && p.rating >= 4.5).slice(0, 4);
+  const productList = allProducts?.items || [];
+  const featuredProducts = productList.slice(0, 8);
+  const bestSellingProducts = productList.filter((p: Product) => p.rating && p.rating >= 4.5).slice(0, 4);
   const topCategories = categories.filter(c => !c.parentCategory);
 
   useEffect(() => {
@@ -149,7 +150,7 @@ export const Home = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {topCategories.map(category => (
             <Link
-              key={category.id}
+              key={category._id}
               to={`/products?category=${category._id}`}
               className="group relative aspect-square rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
             >
@@ -188,8 +189,8 @@ export const Home = () => {
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map(product => (
-              <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
+            {featuredProducts.map((product: Product) => (
+              <ProductCard key={product._id} product={product} onAddToCart={handleAddToCart} />
             ))}
           </div>
           <div className="text-center mt-8 md:hidden">
@@ -216,8 +217,8 @@ export const Home = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {bestSellingProducts.map(product => (
-              <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
+            {bestSellingProducts.map((product: Product) => (
+              <ProductCard key={product._id} product={product} onAddToCart={handleAddToCart} />
             ))}
           </div>
         </div>

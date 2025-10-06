@@ -1,26 +1,37 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
-import { useToast } from '../components/ui/Toast';
 import { ordersAPI } from '../services/api';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { CheckCircle, CreditCard, Smartphone, Tag } from 'lucide-react';
-import { useAppSelector } from '../store/hooks';
+import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { fetchCart } from '../store/slices/cartSlice';
+import { showToast } from '../store/slices/uiSlice';
+import { useProducts } from '../hooks/useProducts';
+import { Product } from '../types';
 
 export const Checkout = () => {
-  const { cart, cartTotal, clearCart } = useCart();
   const { user } = useAuth();
-  const { showToast } = useToast();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [orderId, setOrderId] = useState('');
   const cartItems = useAppSelector(state => state.cart.items);
+  const { data: allProducts } = useProducts({});
+
+  const productMap: Record<string, Product> = {};
+  (allProducts?.items || []).forEach((p: Product) => {
+    productMap[p._id] = p;
+  });
+
+  const cartTotal = cartItems.reduce((total, item) => {
+    const product = productMap[item.productId];
+    return total + (product ? product.price * (item.quantity || 0) : 0);
+  }, 0);
 
 
-  console.log({ cartItems, user })
 
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'upi'>('card');
   const [couponCode, setCouponCode] = useState('');
@@ -54,7 +65,7 @@ export const Checkout = () => {
     if (coupon) {
       setAppliedCoupon(coupon);
       setCouponError('');
-      showToast(`Coupon applied! ${coupon.discount}% off`, 'success');
+      dispatch(showToast({ message: `Coupon applied! ${coupon.discount}% off`, type: 'success' }));
     } else {
       setCouponError('Invalid coupon code');
       setAppliedCoupon(null);
@@ -75,12 +86,15 @@ export const Checkout = () => {
     try {
       const order = await ordersAPI.create({
         userId: user.id,
-        products: cartItems.map(item => ({
-          productId: item.product._id,
-          productName: item.product.name,
-          quantity: item.quantity,
-          price: item.product.price,
-        })),
+        products: cartItems.map(item => {
+          const product = productMap[item.productId];
+          return {
+            productId: item.productId,
+            productName: product?.name || '',
+            quantity: item.quantity || 0,
+            price: product?.price || 0,
+          };
+        }),
         status: 'pending',
         totalPrice: finalTotal,
         shippingAddress: {
@@ -94,12 +108,12 @@ export const Checkout = () => {
         },
       });
 
-      setOrderId(order.id);
-      clearCart();
+      setOrderId(order._id);
+      await dispatch(fetchCart());
       setStep(3);
-      showToast('Order placed successfully!', 'success');
+      dispatch(showToast({ message: 'Order placed successfully!', type: 'success' }));
     } catch (error) {
-      showToast('Failed to place order', 'error');
+      dispatch(showToast({ message: 'Failed to place order', type: 'error' }));
     } finally {
       setLoading(false);
     }

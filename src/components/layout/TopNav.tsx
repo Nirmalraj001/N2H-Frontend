@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, User, Search, Menu, LogOut, Package, LayoutDashboard, Bell, Star } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useCart } from '../../contexts/CartContext';
+import { useAppSelector } from '../../store/hooks';
 import { productsAPI, categoriesAPI } from '../../services/api';
 import { Product, Category } from '../../types';
 
@@ -16,7 +16,8 @@ export const TopNav = () => {
     categories: Category[];
   }>({ products: [], categories: [] });
   const { user, logout, isAdmin } = useAuth();
-  const { cartCount } = useCart();
+  const cartItems = useAppSelector(state => state.cart.items);
+  const cartCount = cartItems.reduce((total, item) => total + (item.quantity || 0), 0);
   const navigate = useNavigate();
   const searchRef = useRef<HTMLDivElement>(null);
 
@@ -118,8 +119,8 @@ export const TopNav = () => {
                         <p className="text-xs font-semibold text-gray-500 uppercase px-2 py-1">Categories</p>
                         {searchResults.categories.map(category => (
                           <button
-                            key={category.id}
-                            onClick={() => handleSelectCategory(category.id)}
+                            key={category._id}
+                            onClick={() => handleSelectCategory(category._id)}
                             className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-md flex items-center gap-2"
                           >
                             <div className="w-8 h-8 rounded overflow-hidden bg-gray-100">
@@ -141,8 +142,8 @@ export const TopNav = () => {
                         <p className="text-xs font-semibold text-gray-500 uppercase px-2 py-1">Products</p>
                         {searchResults.products.map(product => (
                           <button
-                            key={product.id}
-                            onClick={() => handleSelectProduct(product.id)}
+                            key={product._id}
+                            onClick={() => handleSelectProduct(product._id)}
                             className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-md flex items-center gap-3"
                           >
                             <div className="w-12 h-12 rounded overflow-hidden bg-gray-100">

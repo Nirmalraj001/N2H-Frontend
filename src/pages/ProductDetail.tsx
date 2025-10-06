@@ -24,14 +24,13 @@ export const ProductDetail = () => {
   const cartItem = cartItems.find(item => item.productId === id);
   const inCart = !!cartItem;
 
-  const suggestedProducts = allProducts?.items?.filter(p => p._id !== id && product && (p.category === product.category || p.tags.some(tag => product.tags.includes(tag))))
+  const productList = allProducts?.items || [];
+  const suggestedProducts = productList.filter((p: Product) => p._id !== id && product && (p.category === product.category || p.tags.some((tag: string) => product.tags.includes(tag))))
     .slice(0, 4);
-
-  const suggest = { items: suggestedProducts }
 
   useEffect(() => {
     if (cartItem) {
-      setQuantity(cartItem.quantity);
+      setQuantity(cartItem.quantity || 1);
     } else {
       setQuantity(1);
     }
@@ -379,7 +378,7 @@ export const ProductDetail = () => {
               </div>
               <div className="flex py-3 border-b border-gray-100">
                 <span className="font-semibold text-gray-900 w-48">Category:</span>
-                <span className="text-gray-600">{product.category.name}</span>
+                <span className="text-gray-600">{typeof product.category === 'string' ? product.category : product.category.name}</span>
               </div>
               <div className="flex py-3 border-b border-gray-100">
                 <span className="font-semibold text-gray-900 w-48">Stock:</span>
@@ -407,7 +406,7 @@ export const ProductDetail = () => {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 mb-8">You May Also Like</h2>
             <ProductGrid
-              products={suggest}
+              products={suggestedProducts}
               onAddToCart={async (productId, qty) => {
                 try {
                   await dispatch(addToCart({ productId, quantity: qty })).unwrap();

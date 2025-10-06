@@ -4,12 +4,11 @@ import { Product, Category } from '../types';
 import { productsAPI, categoriesAPI } from '../services/api';
 import { ProductGrid } from '../components/products/ProductGrid';
 import { FilterPanel } from '../components/products/FilterPanel';
-import { useCart } from '../contexts/CartContext';
-import { useToast } from '../components/ui/Toast';
 import { Select } from '../components/ui/Select';
 import { SlidersHorizontal } from 'lucide-react';
 import { useAppDispatch } from '../store/hooks';
 import { addToCart } from '../store/slices/cartSlice';
+import { showToast } from '../store/slices/uiSlice';
 
 export const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,8 +16,6 @@ export const Products = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
-  const { cart, updateQuantity } = useCart();
-  const { showToast } = useToast();
   const dispatch = useAppDispatch();
 
   const categoryParams = searchParams.getAll('category');
@@ -33,7 +30,7 @@ export const Products = () => {
         const cats = await categoriesAPI.getAll();
         setCategories(cats);
       } catch (error) {
-        showToast('Failed to load categories', 'error');
+        dispatch(showToast({ message: 'Failed to load categories', type: 'error' }));
       }
     };
     loadCategories();
@@ -53,7 +50,7 @@ export const Products = () => {
 
         setProducts(prods);
       } catch (error) {
-        showToast('Failed to load products', 'error');
+        dispatch(showToast({ message: 'Failed to load products', type: 'error' }));
       } finally {
         setLoading(false);
       }
@@ -101,17 +98,11 @@ export const Products = () => {
   };
 
   const handleAddToCart = async (productId: string, quantity: number) => {
-    if (quantity > 0) {      
+    try {
       await dispatch(addToCart({ productId, quantity })).unwrap();
-      showToast('Added to cart', 'success');
-    } else if (quantity < 0) {
-      const currentItem = cart.find(item => item.productId === productId);
-      if (currentItem) {
-        const newQty = currentItem?.quantity + quantity;
-        if (newQty > 0) {
-          updateQuantity(productId, newQty);
-        }
-      }
+      dispatch(showToast({ message: 'Added to cart successfully', type: 'success' }));
+    } catch (error) {
+      dispatch(showToast({ message: 'Failed to add to cart', type: 'error' }));
     }
   };
 

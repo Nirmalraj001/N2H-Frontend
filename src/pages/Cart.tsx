@@ -14,7 +14,6 @@ export const Cart = () => {
   const cartItems = useAppSelector(state => state.cart.items);
   const { data: allProducts = [] } = useProducts({}); // Load all products
 
-  console.log({ cartItems })
 
   const [products, setProducts] = useState<Record<string, Product>>({});
 
@@ -30,7 +29,10 @@ export const Cart = () => {
     setProducts(productMap);
   }, [allProducts]);
 
-  const cartTotal = cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
+  const cartTotal = cartItems.reduce((total, item) => {
+    const product = products[item.productId];
+    return total + (product ? product.price * (item.quantity || 0) : 0);
+  }, 0);
 
   const handleIncrement = async (productId: string, quantity: number, stock: number) => {
     if (quantity >= stock) return;
@@ -81,11 +83,11 @@ export const Cart = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-4">
           {cartItems.map(item => {
-            const product = products[item.product._id];
+            const product = products[item.productId];
             if (!product) return null;
 
             return (
-              <div key={item.product._id} className="bg-white rounded-lg shadow-md p-6 flex gap-4">
+              <div key={item.productId} className="bg-white rounded-lg shadow-md p-6 flex gap-4">
                 <img
                   src={product.images[0]}
                   alt={product.name}
@@ -100,22 +102,22 @@ export const Cart = () => {
                 </div>
                 <div className="flex flex-col items-end justify-between">
                   <button
-                    onClick={() => handleRemove(item.product._id)}
+                    onClick={() => handleRemove(item.productId)}
                     className="text-red-600 hover:text-red-700"
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => handleDecrement(item.product._id, item.quantity)}
+                      onClick={() => handleDecrement(item.productId, item.quantity || 0)}
                       className="w-8 h-8 rounded border border-gray-300 hover:bg-gray-50"
                     >
                       <Minus className="w-4 h-4 mx-auto" />
                     </button>
-                    <span className="w-12 text-center font-medium">{item.quantity}</span>
+                    <span className="w-12 text-center font-medium">{item.quantity || 0}</span>
                     <button
-                      onClick={() => handleIncrement(item.product._id, item.quantity, product.stock)}
-                      disabled={item.quantity >= product.stock}
+                      onClick={() => handleIncrement(item.productId, item.quantity || 0, product.stock)}
+                      disabled={(item.quantity || 0) >= product.stock}
                       className="w-8 h-8 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50"
                     >
                       <Plus className="w-4 h-4 mx-auto" />
@@ -144,11 +146,7 @@ export const Cart = () => {
                 <span className="font-bold text-xl">₹{cartTotal}</span>
               </div>
             </div>
-            <Button fullWidth size="lg" onClick={() => {
-              dispatch(updateCartItem({ productId, quantity: quantity - 1 })).unwrap()
-              navigate('/checkout')
-            }
-            }>
+            <Button fullWidth size="lg" onClick={() => navigate('/checkout')}>
               Proceed to Checkout
             </Button>
             <Link to="/products">

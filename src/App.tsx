@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
-import { CartProvider } from './contexts/CartContext';
 import { ToastProvider } from './components/ui/Toast';
 import { ToastContainer } from './components/ui/ToastContainer';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -25,27 +24,17 @@ import { AdminBanners } from './pages/admin/AdminBanners';
 import { AdminLogos } from './pages/admin/AdminLogos';
 import { AdminSiteLinks } from './pages/admin/AdminSiteLinks';
 import { AdminReviews } from './pages/admin/AdminReviews';
+import { AdminTheme } from './pages/admin/AdminTheme';
 import { Reviews } from './pages/Reviews';
-// import { useEffect } from 'react';
-// import { fetchCart } from './store/slices/cartSlice';
-// import { useAppDispatch } from './store/hooks';
 
 function App() {
-  // const dispatch = useAppDispatch();
-
-
-  // useEffect(() => {
-  //   dispatch(fetchCart());
-  // }, [dispatch]);
-
   return (
     <BrowserRouter>
       <ScrollToTop />
       <AuthProvider>
-        <CartProvider>
-          <ToastProvider>
-            <ToastContainer />
-            <Routes>
+        <ToastProvider>
+          <ToastContainer />
+          <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
 
@@ -139,12 +128,12 @@ function App() {
                 <Route path="logos" element={<AdminLogos />} />
                 <Route path="site-links" element={<AdminSiteLinks />} />
                 <Route path="reviews" element={<AdminReviews />} />
+                <Route path="theme" element={<AdminTheme />} />
               </Route>
 
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </ToastProvider>
-        </CartProvider>
       </AuthProvider>
     </BrowserRouter>
   );

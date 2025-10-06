@@ -131,3 +131,18 @@ export interface SiteLogo {
   altText?: string;
   isActive: boolean;
 }
+
+export interface ThemeSettings {
+  id: string;
+  mode: 'light' | 'dark';
+  primaryColor: string;
+  secondaryColor: string;
+  backgroundColor: string;
+  textColor: string;
+  fontFamily: string;
+  baseFontSize: string;
+  buttonRoundness: string;
+  buttonShadow: boolean;
+  buttonPadding: string;
+  updatedAt: string;
+}
