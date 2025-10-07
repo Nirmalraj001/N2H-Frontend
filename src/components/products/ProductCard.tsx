@@ -49,13 +49,13 @@ export const ProductCard = ({ product, onAddToCart, cartQuantity = 0 }: ProductC
     }
   };
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+    <div className="card">
       <Link to={`/products/${product._id}`}>
-        <div className="relative aspect-square overflow-hidden bg-gray-100">
+        <div className="relative aspect-square overflow-hidden bg-background rounded-t-xl">
           <img
             src={product.images[0]}
             alt={product.name}
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-cover transition-transform duration-200"
             loading="lazy"
           />
           {product.stock === 0 && (
@@ -65,21 +65,21 @@ export const ProductCard = ({ product, onAddToCart, cartQuantity = 0 }: ProductC
           )}
         </div>
       </Link>
-      <div className="p-4">
+      <div className="p-4 sm:p-6">
         <Link to={`/products/${product._id}`}>
-          <h3 className="font-semibold text-lg text-gray-900 hover:text-blue-600 transition-colors line-clamp-2">
+          <h3 className="font-semibold text-lg text-text hover:text-primary transition-all duration-200 line-clamp-2">
             {product.name}
           </h3>
         </Link>
-        <p className="text-gray-600 text-sm mt-1 line-clamp-2">{product.description}</p>
+        <p className="text-muted text-sm mt-1 line-clamp-2">{product.description}</p>
 
         <div className="flex items-center gap-2 mt-2">
           {product.rating && (
             <div className="flex items-center gap-1">
-              <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-              <span className="text-sm font-medium">{product.rating}</span>
+              <Star className="w-4 h-4 fill-accent text-accent" />
+              <span className="text-sm font-medium text-text">{product.rating}</span>
               {product.reviews && (
-                <span className="text-sm text-gray-500">({product.reviews})</span>
+                <span className="text-sm text-muted">({product.reviews})</span>
               )}
             </div>
           )}
@@ -89,7 +89,7 @@ export const ProductCard = ({ product, onAddToCart, cartQuantity = 0 }: ProductC
           {product.tags.slice(0, 3).map(tag => (
             <span
               key={tag}
-              className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full"
+              className="px-2 py-1 bg-background text-muted text-xs rounded-full"
             >
               {tag}
             </span>
@@ -98,9 +98,9 @@ export const ProductCard = ({ product, onAddToCart, cartQuantity = 0 }: ProductC
 
         <div className="flex items-center justify-between mt-4">
           <div>
-            <p className="text-2xl font-bold text-gray-900">₹{product.price}</p>
+            <p className="text-xl sm:text-2xl font-bold text-primary">₹{product.price}</p>
             {product.stock > 0 && product.stock < 10 && (
-              <p className="text-xs text-orange-600">Only {product.stock} left</p>
+              <p className="text-xs text-orange-600 font-medium">Only {product.stock} left</p>
             )}
           </div>
           {onAddToCart && (
@@ -118,15 +118,14 @@ export const ProductCard = ({ product, onAddToCart, cartQuantity = 0 }: ProductC
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleDecrement}
-                    className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-                  // disabled={quantity <= 1}
+                    className="w-8 h-8 flex items-center justify-center rounded-full bg-background hover:bg-border transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary"
                   >
-                    <Minus className="w-4 h-4" />
+                    <Minus className="w-4 h-4 text-text" />
                   </button>
-                  <span className="font-semibold text-lg w-8 text-center">{quantity}</span>
+                  <span className="font-semibold text-lg w-8 text-center text-text">{quantity}</span>
                   <button
                     onClick={handleIncrement}
-                    className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+                    className="w-8 h-8 flex items-center justify-center rounded-full bg-primary hover:shadow-md text-white transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={quantity >= product.stock}
                   >
                     <Plus className="w-4 h-4" />

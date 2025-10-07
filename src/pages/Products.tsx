@@ -110,20 +110,20 @@ export const Products = () => {
   const categoryNames = selectedCategories.map(c => c.name).join(', ');
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="container-responsive py-6 sm:py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">
+        <h1 className="text-2xl sm:text-3xl font-bold text-text">
           {categoryNames ? categoryNames : searchQuery ? `Search: "${searchQuery}"` : 'All Products'}
         </h1>
-        <p className="text-gray-600 mt-2">{products.length} products found</p>
+        <p className="text-muted mt-2">{products.length} products found</p>
       </div>
 
       <div className="flex items-center gap-4 mb-6">
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className="lg:hidden flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+          className="lg:hidden flex items-center gap-2 px-4 py-2 border border-border rounded-lg hover:bg-background transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary"
         >
-          <SlidersHorizontal className="w-5 h-5" />
+          <SlidersHorizontal className="w-5 h-5 text-text" />
           Filters
         </button>
 
@@ -143,7 +143,7 @@ export const Products = () => {
         </div>
       </div>
 
-      <div className="flex gap-8">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         <aside className={`${showFilters ? 'block' : 'hidden'} lg:block w-full lg:w-64 flex-shrink-0`}>
           <FilterPanel
             categories={categories}
@@ -159,7 +159,7 @@ export const Products = () => {
         <div className="flex-1">
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
             </div>
           ) : (
             <ProductGrid products={products} onAddToCart={handleAddToCart} />

@@ -22,8 +22,8 @@ export const ProductGrid = ({ products, onAddToCart }: ProductGridProps) => {
 
   if (productList.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-500 text-lg">No products found</p>
+      <div className="text-center py-12 sm:py-16">
+        <p className="text-muted text-lg">No products found</p>
       </div>
     );
   }
