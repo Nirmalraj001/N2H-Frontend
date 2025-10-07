@@ -5,16 +5,10 @@ import { ProductCard } from '../components/products/ProductCard';
 import { Button } from '../components/ui/Button';
 import { useProducts } from '../hooks/useProducts';
 import { useCategories } from '../hooks/useCategories';
-<<<<<<< HEAD
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { addToCart, fetchCart } from '../store/slices/cartSlice';
 import { showToast } from '../store/slices/uiSlice';
 import { Product } from '../types';
-=======
-import { useAppDispatch } from '../store/hooks';
-import { addToCart } from '../store/slices/cartSlice';
-import { showToast } from '../store/slices/uiSlice';
->>>>>>> 94d93a15626e1d439c47703f9ac627f27fef98c6
 
 const carouselBanners = [
   {

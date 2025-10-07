@@ -87,15 +87,9 @@ export const Checkout = () => {
       const order = await ordersAPI.create({
         userId: user.id,
         products: cartItems.map(item => {
-<<<<<<< HEAD
           const product = productMap[item.product._id];
           return {
             productId: product?._id,
-=======
-          const product = productMap[item.productId];
-          return {
-            productId: item.productId,
->>>>>>> 94d93a15626e1d439c47703f9ac627f27fef98c6
             productName: product?.name || '',
             quantity: item.quantity || 0,
             price: product?.price || 0,

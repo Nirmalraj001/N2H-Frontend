@@ -2,11 +2,7 @@ import { Link } from 'react-router-dom';
 import { ShoppingCart, Star, Plus, Minus } from 'lucide-react';
 import { Product } from '../../types';
 import { Button } from '../ui/Button';
-<<<<<<< HEAD
 import { useEffect, useState } from 'react';
-=======
-import { useState } from 'react';
->>>>>>> 94d93a15626e1d439c47703f9ac627f27fef98c6
 
 interface ProductCardProps {
   product: Product;
@@ -123,11 +119,7 @@ export const ProductCard = ({ product, onAddToCart, cartQuantity = 0 }: ProductC
                   <button
                     onClick={handleDecrement}
                     className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-<<<<<<< HEAD
                   // disabled={quantity <= 1}
-=======
-                    disabled={quantity <= 1}
->>>>>>> 94d93a15626e1d439c47703f9ac627f27fef98c6
                   >
                     <Minus className="w-4 h-4" />
                   </button>
