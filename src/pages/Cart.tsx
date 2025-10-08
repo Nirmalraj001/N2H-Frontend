@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchCart, updateCartItem, removeFromCart } from '../store/slices/cartSlice';
 import { showToast } from '../store/slices/uiSlice';
-import { useProducts } from '../hooks/useProducts';
-import { Product } from '../types';
 
 export const Cart = () => {
   const dispatch = useAppDispatch();
@@ -119,15 +117,15 @@ export const Cart = () => {
             <div className="space-y-3 mb-6">
               <div className="flex justify-between">
                 <span className="text-gray-600">Subtotal</span>
-                <span className="font-medium">₹{cartTotal?.toFixed(2)}</span>
+                <span className="font-medium">₹{cartTotal?.toFixed(2) }</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Shipping</span>
-                <span className="font-medium">Free</span>
+                <span className="font-medium">₹40</span>
               </div>
               <div className="border-t pt-3 flex justify-between">
                 <span className="font-semibold text-lg">Total</span>
-                <span className="font-bold text-xl">₹{cartTotal?.toFixed(2)}</span>
+                <span className="font-bold text-xl">₹{cartTotal?.toFixed(2) + 40}</span>
               </div>
             </div>
             <Button fullWidth size="lg" onClick={() => navigate('/checkout')}>

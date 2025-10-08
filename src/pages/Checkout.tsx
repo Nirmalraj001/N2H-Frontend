@@ -22,7 +22,7 @@ export const Checkout = () => {
   const { data: allProducts } = useProducts({});
 
   const productMap: Record<string, Product> = {};
-  (allProducts?.items || []).forEach((p: Product) => {
+  (allProducts || []).forEach((p: Product) => {
     productMap[p._id] = p;
   });
 
@@ -88,6 +88,7 @@ export const Checkout = () => {
         userId: user.id,
         products: cartItems.map(item => {
           const product = productMap[item.product._id];
+          console.log({product})
           return {
             productId: product?._id,
             productName: product?.name || '',
