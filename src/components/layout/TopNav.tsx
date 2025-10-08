@@ -102,6 +102,21 @@ export const TopNav = () => {
               <span className="text-lg sm:text-xl font-bold text-text">N2H Enterprises</span>
             </Link>
 
+            <div className="hidden lg:flex items-center gap-6">
+              <Link
+                to="/categories"
+                className="text-sm font-medium text-text hover:text-primary transition-colors duration-200"
+              >
+                Categories
+              </Link>
+              <Link
+                to="/products"
+                className="text-sm font-medium text-text hover:text-primary transition-colors duration-200"
+              >
+                Products
+              </Link>
+            </div>
+
             <form onSubmit={handleSearch} className="hidden md:block">
               <div className="relative" ref={searchRef}>
                 <input
@@ -278,6 +293,22 @@ export const TopNav = () => {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
               </div>
             </form>
+            <div className="flex flex-col gap-2 mb-4">
+              <Link
+                to="/categories"
+                className="block px-4 py-2 text-text hover:bg-background rounded-lg font-medium transition-colors"
+                onClick={() => setShowMobileMenu(false)}
+              >
+                Categories
+              </Link>
+              <Link
+                to="/products"
+                className="block px-4 py-2 text-text hover:bg-background rounded-lg font-medium transition-colors"
+                onClick={() => setShowMobileMenu(false)}
+              >
+                Products
+              </Link>
+            </div>
             {!user && (
               <Link
                 to="/login"

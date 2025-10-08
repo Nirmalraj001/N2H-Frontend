@@ -176,6 +176,13 @@ const cartItems = useAppSelector(state => state.cart.items);
             </Link>
           ))}
         </div>
+        <div className="text-center mt-8">
+          <Link to="/categories">
+            <Button variant="outline" size="lg">
+              View All Categories <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+          </Link>
+        </div>
       </section>
 
       <section className="bg-white py-12 sm:py-16 lg:py-20">

@@ -25,6 +25,11 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/categories" className="hover:text-white transition-all duration-200 hover:translate-x-1 inline-block">
+                  Categories
+                </Link>
+              </li>
+              <li>
                 <Link to="/products" className="hover:text-white transition-all duration-200 hover:translate-x-1 inline-block">
                   Products
                 </Link>
@@ -43,7 +48,7 @@ export const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-white mb-4">Categories</h3>
+            <h3 className="font-semibold text-white mb-4">Shop by Category</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/products?category=c1" className="hover:text-white transition-all duration-200 hover:translate-x-1 inline-block">

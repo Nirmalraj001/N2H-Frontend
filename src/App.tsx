@@ -30,6 +30,7 @@ import { AdminSiteLinks } from './pages/admin/AdminSiteLinks';
 import { AdminReviews } from './pages/admin/AdminReviews';
 import { AdminTheme } from './pages/admin/AdminTheme';
 import { Reviews } from './pages/Reviews';
+import { Categories } from './pages/Categories';
 
 function App() {
   return (
@@ -47,6 +48,14 @@ function App() {
                 element={
                   <AppShell>
                     <Home />
+                  </AppShell>
+                }
+              />
+              <Route
+                path="/categories"
+                element={
+                  <AppShell>
+                    <Categories />
                   </AppShell>
                 }
               />
