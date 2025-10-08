@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { bulkOrderService } from '../../services/bulkOrderService';
 import { BulkOrder } from '../../types';
+import { exportBulkOrderToCSV } from '../../utils/csvExporter';
+import { exportBulkOrderToExcel } from '../../utils/excelExporter';
 
 const statusOptions = [
   'pending',
@@ -51,8 +53,12 @@ const AdminBulkOrderDetail: React.FC = () => {
   };
 
   const handleExport = (type: 'csv' | 'excel') => {
-    if (!id) return;
-    window.open(`/api/admin/bulk-orders/export/${id}?type=${type}`, '_blank');
+    if (!order) return;
+    if (type === 'csv') {
+      exportBulkOrderToCSV(order);
+    } else {
+      exportBulkOrderToExcel(order);
+    }
   };
 
   if (loading) return <div className="p-8 text-center">Loading...</div>;

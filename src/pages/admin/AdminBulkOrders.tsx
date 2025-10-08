@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { bulkOrderService } from '../../services/bulkOrderService';
 import { BulkOrder } from '../../types';
 import { Link } from 'react-router-dom';
+import { exportAllBulkOrdersToCSV } from '../../utils/csvExporter';
+import { exportAllBulkOrdersToExcel } from '../../utils/excelExporter';
 
 const statusColors = {
   pending: 'bg-yellow-100 text-yellow-800',
@@ -24,12 +26,39 @@ const AdminBulkOrders: React.FC = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleExportAll = (type: 'csv' | 'excel') => {
+    if (orders.length === 0) return;
+    if (type === 'csv') {
+      exportAllBulkOrdersToCSV(orders);
+    } else {
+      exportAllBulkOrdersToExcel(orders);
+    }
+  };
+
   if (loading) return <div className="p-8 text-center">Loading...</div>;
   if (error) return <div className="p-8 text-center text-red-600">{error}</div>;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Admin Bulk Orders</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Admin Bulk Orders</h1>
+        <div className="flex gap-2">
+          <button
+            onClick={() => handleExportAll('csv')}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400"
+            disabled={orders.length === 0}
+          >
+            Export All as CSV
+          </button>
+          <button
+            onClick={() => handleExportAll('excel')}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400"
+            disabled={orders.length === 0}
+          >
+            Export All as Excel
+          </button>
+        </div>
+      </div>
       <div className="overflow-x-auto">
         <table className="min-w-full border text-sm">
           <thead>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { bulkOrderService } from '../services/bulkOrderService';
 import { BulkOrder } from '../types';
+import { generateBulkOrderInvoice } from '../utils/pdfGenerator';
 
 const BulkOrderDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,8 +19,8 @@ const BulkOrderDetail: React.FC = () => {
   }, [id]);
 
   const handleDownloadInvoice = () => {
-    if (!id) return;
-    window.open(`/api/bulk-orders/export/${id}`, '_blank');
+    if (!order) return;
+    generateBulkOrderInvoice(order);
   };
 
   if (loading) return <div className="p-8 text-center">Loading...</div>;
