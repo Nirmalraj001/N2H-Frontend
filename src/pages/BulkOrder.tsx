@@ -37,8 +37,6 @@ const BulkOrder: React.FC = () => {
     setRows([emptyRow([])]);
   }, []);
 
-  console.log({products})
-
   const validateRow = (row: BulkOrderItem): string => {
     if (!row.productId) return 'Select a product.';
     const prod = products.find(p => p._id === row.productId);

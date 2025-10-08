@@ -222,7 +222,6 @@ export const cartAPI = {
 export const bulkOrderAPI = {
   // USER
   create: async (data: any): Promise<void> => {
-    console.log({data})
     const res = await api.post('/bulk-orders', data, { headers: getAuthHeader() });
     return res.data;
   },

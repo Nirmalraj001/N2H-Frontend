@@ -25,12 +25,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   // Load user on mount
-  useEffect(() => {
-    const init = async () => {
+  const init = async () => {
       try {
         const storedToken = localStorage.getItem("token");
         if (storedToken) {
-          console.log({storedToken})
           const currentUser = await authService.getCurrentUser();
           setUser(currentUser);
         }
@@ -42,6 +40,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoading(false);
       }
     };
+
+  useEffect(() => {    
     init();
   }, []);
 
@@ -49,12 +49,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { user, token } = await authService.login({ email, password });
     localStorage.setItem("token", token);
     setUser(user);
+    init();
   };
 
   const register = async (name: string, email: string, password: string) => {
     const { user, token } = await authService.register({ name, email, password });
     localStorage.setItem("token", token);
     setUser(user);
+    init();
   };
 
   const logout = () => {

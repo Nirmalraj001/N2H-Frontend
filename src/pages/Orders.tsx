@@ -14,8 +14,6 @@ export const Orders = () => {
   const { user } = useAuth();
   const { showToast } = useToast();
 
-  console.log({bulkOrders})
-
   useEffect(() => {
     const loadOrders = async () => {
       if (!user) return;

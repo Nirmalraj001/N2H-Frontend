@@ -12,26 +12,13 @@ export const Cart = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const cartItems = useAppSelector(state => state.cart.items);
-  const { data: allProducts = [] } = useProducts({}); // Load all products
-
-console.log({cartItems})
-  const [products, setProducts] = useState<Record<string, Product>>({});
 
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
 
-  useEffect(() => {
-    const productMap: Record<string, Product> = {};
-    for (const product of allProducts || []) {
-      productMap[product._id] = product;
-    }
-    setProducts(productMap);
-  }, [allProducts]);
-
   const cartTotal = cartItems.reduce((total, item) => {
-    const product = products[item.product._id];
-    return total + (product ? product.price * (item.quantity || 0) : 0);
+    return total + (item.product ? item.product.price * (item.quantity || 0) : 0);
   }, 0);
 
   const handleIncrement = async (productId: string, quantity: number, stock: number) => {
@@ -83,41 +70,38 @@ console.log({cartItems})
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-4">
           {cartItems.map(item => {
-            const product = products[item.product._id];
-            if (!product) return null;
-
             return (
               <div key={item.product._id} className="bg-white rounded-lg shadow-md p-6 flex gap-4">
                 <img
-                  src={product.images[0]}
-                  alt={product.name}
+                  src={item.product?.images[0]}
+                  alt={item.product.name}
                   className="w-24 h-24 object-cover rounded-lg"
                 />
                 <div className="flex-1">
-                  <Link to={`/products/${product._id}`} className="font-semibold text-lg hover:text-blue-600">
-                    {product.name}
+                  <Link to={`/products/${item.product._id}`} className="font-semibold text-lg hover:text-blue-600">
+                    {item.product.name}
                   </Link>
-                  <p className="text-gray-600 text-sm mt-1">{product.description.slice(0, 100)}...</p>
-                  <p className="text-xl font-bold text-gray-900 mt-2">₹{product.price}</p>
+                  <p className="text-gray-600 text-sm mt-1">{item.product.description.slice(0, 100)}...</p>
+                  <p className="text-xl font-bold text-gray-900 mt-2">₹{item.product.price}</p>
                 </div>
                 <div className="flex flex-col items-end justify-between">
                   <button
-                    onClick={() => handleRemove(product._id)}
+                    onClick={() => handleRemove(item.product._id)}
                     className="text-red-600 hover:text-red-700"
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => handleDecrement(product._id, item.quantity || 0)}
+                      onClick={() => handleDecrement(item.product._id, item.quantity || 0)}
                       className="w-8 h-8 rounded border border-gray-300 hover:bg-gray-50"
                     >
                       <Minus className="w-4 h-4 mx-auto" />
                     </button>
                     <span className="w-12 text-center font-medium">{item.quantity || 0}</span>
                     <button
-                      onClick={() => handleIncrement(product._id, item.quantity || 0, product.stock)}
-                      disabled={(item.quantity || 0) >= product.stock}
+                      onClick={() => handleIncrement(item.product._id, item.quantity || 0, item.product.stock)}
+                      disabled={(item.quantity || 0) >= item.product.stock}
                       className="w-8 h-8 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50"
                     >
                       <Plus className="w-4 h-4 mx-auto" />

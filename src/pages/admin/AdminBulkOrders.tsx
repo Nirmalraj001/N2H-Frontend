@@ -17,8 +17,6 @@ const AdminBulkOrders: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  console.log({orders})
-
   useEffect(() => {
     bulkOrderService.getAllBulkOrders?.()
       .then(setOrders)

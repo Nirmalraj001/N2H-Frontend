@@ -68,8 +68,6 @@ const cartItems = useAppSelector(state => state.cart.items);
 
   const isLoading = categoriesLoading || productsLoading;
 
-  console.log({featuredProducts})
-
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">

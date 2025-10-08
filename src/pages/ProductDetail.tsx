@@ -34,13 +34,11 @@ export const ProductDetail = () => {
 
   useEffect(() => {
     if (cartItem) {
-      setQuantity(cartItem?.quantity);   // always reflect actual cart quantity
+      setQuantity(cartItem?.quantity);
     } else {
       setQuantity(1);
     }
   }, [cartItem]);
-
-  console.log({cartItem})
 
   const handleAddToCart = async () => {
     if (!product) return;

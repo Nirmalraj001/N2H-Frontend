@@ -5,9 +5,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useAppSelector } from '../../store/hooks';
 import { productsAPI, categoriesAPI } from '../../services/api';
 import { Product, Category } from '../../types';
+import { useDebounce } from '../../hooks/useDebounce';
 
 export const TopNav = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showSearchResults, setShowSearchResults] = useState(false);
@@ -34,7 +36,7 @@ export const TopNav = () => {
 
   useEffect(() => {
     const searchData = async () => {
-      if (searchQuery.trim().length < 2) {
+      if (debouncedSearchQuery.trim().length < 2) {
         setSearchResults({ products: [], categories: [] });
         setShowSearchResults(false);
         return;
@@ -42,17 +44,17 @@ export const TopNav = () => {
 
       try {
         const [products, categories] = await Promise.all([
-          productsAPI.getAll({ search: searchQuery }),
+          productsAPI.getAll({ search: debouncedSearchQuery }),
           categoriesAPI.getAll(),
         ]);
 
         const filteredCategories = categories.filter(c =>
-          c.name.toLowerCase().includes(searchQuery.toLowerCase())
+          c.name.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
         );
 
         setSearchResults({
-          products: products.slice(0, 5),
-          categories: filteredCategories.slice(0, 3),
+          products: products?.items.slice(0, 5),
+          categories: filteredCategories?.slice(0, 3),
         });
         setShowSearchResults(true);
       } catch (error) {
@@ -60,9 +62,8 @@ export const TopNav = () => {
       }
     };
 
-    const timeoutId = setTimeout(searchData, 300);
-    return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
+    searchData();
+  }, [debouncedSearchQuery]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,7 +89,7 @@ export const TopNav = () => {
   const handleLogout = () => {
     logout();
     setShowUserMenu(false);
-    navigate('/');
+    navigate('/login')
   };
 
   return (
@@ -164,10 +165,6 @@ export const TopNav = () => {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4">
-            <button className="p-2 hover:bg-background rounded-full transition-all duration-200 hover:scale-110 hidden md:block focus:outline-none focus:ring-2 focus:ring-primary">
-              <Bell className="w-5 h-5 sm:w-6 sm:h-6 text-text" />
-            </button>
-
             <Link
               to="/cart"
               className="relative p-2 hover:bg-background rounded-full transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary"

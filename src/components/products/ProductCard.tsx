@@ -14,8 +14,6 @@ export const ProductCard = ({ product, onAddToCart, cartQuantity = 0 }: ProductC
   const [quantity, setQuantity] = useState(1);
   const [showQuantityInput, setShowQuantityInput] = useState(cartQuantity > 0);
 
-  console.log({showQuantityInput,cartQuantity })
-
   useEffect(() => {
     setQuantity(cartQuantity);
     setShowQuantityInput(cartQuantity > 0);

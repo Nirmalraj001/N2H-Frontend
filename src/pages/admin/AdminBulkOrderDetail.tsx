@@ -21,7 +21,6 @@ const AdminBulkOrderDetail: React.FC = () => {
   const [status, setStatus] = useState('');
   const [updating, setUpdating] = useState(false);
   const [updateMsg, setUpdateMsg] = useState<string | null>(null);
-  console.log({order,status})
 
   useEffect(() => {
     if (!id) return;

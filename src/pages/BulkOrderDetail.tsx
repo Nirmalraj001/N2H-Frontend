@@ -9,8 +9,6 @@ const BulkOrderDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  console.log({order})
-
   useEffect(() => {
     if (!id) return;
     bulkOrderService.getBulkOrderById(id)
