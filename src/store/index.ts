@@ -6,6 +6,7 @@ import categoryReducer from './slices/categorySlice';
 import productReducer from './slices/productSlice';
 import orderReducer from './slices/orderSlice';
 import userReducer from './slices/userSlice';
+import bulkOrderReducer from './slices/bulkOrderSlice';
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
     categories: categoryReducer,
     products: productReducer,
     orders: orderReducer,
-    users: userReducer,
+  users: userReducer,
+  bulkOrders: bulkOrderReducer,
   },
 });
 

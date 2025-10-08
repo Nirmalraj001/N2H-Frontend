@@ -11,7 +11,11 @@ export interface ProductFilters {
 
 export const productService = {
   getAllProducts: async (filters?: ProductFilters): Promise<Product[]> => {
-    return await productsAPI.getAll(filters);
+    const res = await productsAPI.getAll(filters);
+    // If API returns { items: Product[] }, extract items
+    if (Array.isArray(res)) return res;
+    if (res && Array.isArray(res.items)) return res.items;
+    return [];
   },
 
   getProductById: async (id: string): Promise<Product | null> => {

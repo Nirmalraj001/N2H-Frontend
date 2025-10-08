@@ -1,3 +1,26 @@
+// Bulk Order Types
+export interface BulkOrder {
+  _id: string;
+  id: string;
+  userId: string;
+  status: 'pending' | 'approved' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  totalQuantity: number;
+  totalPrice: number;
+  createdAt: string;
+  updatedAt: string;
+  items?: BulkOrderItem[];
+}
+
+export interface BulkOrderItem {
+  id?: string;
+  bulkOrderId?: string;
+  productId: string;
+  quantity: number;
+  price: number; // unit price
+  subtotal: number;
+  sku?: string;
+  productName?: string;
+}
 export interface User {
   id: string;
   name: string;

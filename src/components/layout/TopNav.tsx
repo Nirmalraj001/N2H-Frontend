@@ -179,6 +179,13 @@ export const TopNav = () => {
                 </span>
               )}
             </Link>
+            <Link
+              to="/bulk-order"
+              className="p-2 hover:bg-background rounded-full transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary"
+            >
+              <span className="hidden sm:inline text-sm font-medium text-text">Bulk Order</span>
+              <span className="sm:hidden text-xs font-medium text-text">Bulk</span>
+            </Link>
 
             {user ? (
               <div className="relative">

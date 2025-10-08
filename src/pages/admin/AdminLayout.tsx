@@ -9,6 +9,7 @@ export const AdminLayout = () => {
     { path: '/admin/products', label: 'Products', icon: Package },
     { path: '/admin/categories', label: 'Categories', icon: FolderTree },
     { path: '/admin/orders', label: 'Orders', icon: ShoppingCart },
+    { path: '/admin/bulk-orders', label: 'Bulk Orders', icon: Palette },
     { path: '/admin/users', label: 'Users', icon: Users },
     { path: '/admin/banners', label: 'Banners', icon: Image },
     { path: '/admin/logos', label: 'Logos', icon: FileImage },

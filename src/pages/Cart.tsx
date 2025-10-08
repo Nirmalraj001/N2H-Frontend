@@ -23,7 +23,7 @@ console.log({cartItems})
 
   useEffect(() => {
     const productMap: Record<string, Product> = {};
-    for (const product of allProducts.items || []) {
+    for (const product of allProducts || []) {
       productMap[product._id] = product;
     }
     setProducts(productMap);

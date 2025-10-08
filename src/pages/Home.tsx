@@ -42,7 +42,7 @@ const cartItems = useAppSelector(state => state.cart.items);
   const { data: categories = [], isLoading: categoriesLoading } = useCategories();
   const { data: allProducts = [], isLoading: productsLoading } = useProducts({ });
 
-  const productList = allProducts?.items || [];
+  const productList = allProducts || [];
   const featuredProducts = productList.slice(0, 8);
   const bestSellingProducts = productList.filter((p: Product) => p.rating && p.rating >= 4.5).slice(0, 4);
   const topCategories = categories.filter(c => !c.parentCategory);
@@ -67,6 +67,8 @@ const cartItems = useAppSelector(state => state.cart.items);
   const prevSlide = () => setCurrentSlide(prev => (prev - 1 + carouselBanners.length) % carouselBanners.length);
 
   const isLoading = categoriesLoading || productsLoading;
+
+  console.log({featuredProducts})
 
   if (isLoading) {
     return (

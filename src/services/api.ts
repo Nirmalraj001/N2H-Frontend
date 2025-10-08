@@ -10,7 +10,7 @@ const getAuthHeader = () => {
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
-import { Address, CartItem, Category, Order, Product, User } from "../types";
+import { Address, BulkOrder, BulkOrderItem, CartItem, Category, Order, Product, User } from "../types";
 
 export const authAPI = {
   login: async (email: string, password: string): Promise<{ user: User; token: string }> => {
@@ -49,7 +49,7 @@ export const productsAPI = {
     sort?: string;
     minPrice?: number;
     maxPrice?: number;
-  }): Promise<Product[]> => {
+  }): Promise<any> => {
     const { data } = await api.get("/products", { params });
     return data;
   },
@@ -217,6 +217,33 @@ export const cartAPI = {
     }); // optional clear endpoint
     return data;
   }
+};
+
+export const bulkOrderAPI = {
+  // USER
+  create: async (data: any): Promise<void> => {
+    console.log({data})
+    const res = await api.post('/bulk-orders', data, { headers: getAuthHeader() });
+    return res.data;
+  },
+  getById: async (id: string): Promise<void> => {
+    const res = await api.get(`/bulk-orders/${id}`, { headers: getAuthHeader() });
+    return res.data;
+  },
+  getUserOrders: async (userId: string): Promise<void> => {
+    const res = await api.get(`/bulk-orders/user/${userId}`, { headers: getAuthHeader() });
+    return res.data;
+  },
+
+  // ADMIN
+  getAll: async (): Promise<void> => {
+    const res = await api.get('/bulk-orders/admin/all', { headers: getAuthHeader() });
+    return res.data;
+  },
+  updateStatus: async (id: string, status: string): Promise<void> => {
+    const res = await api.patch(`/bulk-orders/admin/${id}/status`, { status }, { headers: getAuthHeader() });
+    return res.data;
+  },
 };
 
 

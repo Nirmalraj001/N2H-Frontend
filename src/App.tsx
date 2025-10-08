@@ -1,3 +1,7 @@
+import AdminBulkOrderDetail from './pages/admin/AdminBulkOrderDetail';
+import AdminBulkOrders from './pages/admin/AdminBulkOrders';
+import BulkOrderDetail from './pages/BulkOrderDetail';
+import BulkOrder from './pages/BulkOrder';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { ToastProvider } from './components/ui/Toast';
@@ -101,6 +105,26 @@ function App() {
                 }
               />
               <Route
+                path="/bulk-order"
+                element={
+                  <ProtectedRoute>
+                    <AppShell>
+                      <BulkOrder />
+                    </AppShell>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/orders/bulk/:id"
+                element={
+                  <ProtectedRoute>
+                    <AppShell>
+                      <BulkOrderDetail />
+                    </AppShell>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/reviews"
                 element={
                   <ProtectedRoute>
@@ -122,6 +146,8 @@ function App() {
                 <Route index element={<AdminDashboard />} />
                 <Route path="products" element={<AdminProducts />} />
                 <Route path="orders" element={<AdminOrders />} />
+                <Route path="bulk-orders" element={<AdminBulkOrders />} />
+                <Route path="bulk-orders/:id" element={<AdminBulkOrderDetail />} />
                 <Route path="categories" element={<AdminCategories />} />
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="banners" element={<AdminBanners />} />
